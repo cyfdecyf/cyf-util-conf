@@ -1,0 +1,114 @@
+# Use cache
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zsh/cache
+# color code completion!!!!  Wohoo!
+zstyle ':completion:*' list-colors "=(#b) #([0-9]#)*=36=31"
+# Have the newer files last so I see them first
+#zstyle ':completion:*' file-sort modification reverse
+# approximate completion
+zstyle ':completion:*' completer _complete _match _approximate
+zstyle ':completion:*:match:*' original only
+zstyle ':completion:*:approximate:*' max-errors 1 numeric
+# menu completion
+zstyle ':completion:*' menu select=1
+
+autoload -Uz compinit promptinit colors
+compinit
+promptinit
+#zsh-mime-setup
+colors
+
+zstyle :compinstall filename '~/.zshrc'
+
+# compdef can be used after compinit is loaded.
+compdef '_files -g "*.mp3"' mpg123
+compdef '_files -g "*.tar.gz"' tar
+
+setopt emacs
+setopt autocd correct rm_star_wait rc_expand_param
+setopt extendedglob no_case_glob numeric_glob_sort
+unsetopt beep
+
+alias ls='ls --color=auto'
+alias ll='ls --color=auto -lG'
+alias la='ls --color=auto -a'
+alias grep='grep --color=auto'
+alias rm='rm -i'
+alias sc='screen -S alex'
+alias sr='screen -R alex'
+alias man='LANG=C man'
+alias mpg123='mpg123 -C -v'
+alias vi='vim'
+#alias gvi='gvim -font "Courier 10 Pitch 14"'
+alias gvi='gvim -font "Dejavu Sans Mono 13"'
+alias scsh='rlwrap scsh'
+export BREAK_CHARS="\"#'(),;\|!?[]{}"
+alias sbcl="rlwrap -b \$BREAK_CHARS sbcl"
+
+alias -g ..='..'
+alias -g ...='../../'
+alias -g G='| egrep'
+alias -g C='| wc -l'
+
+# Disable ctrl+s
+stty stop ''
+
+# Special keys
+# create a zkbd compatible hash;
+# to add other keys to this hash, see: man 5 terminfo
+typeset -A key
+
+key[Home]=${terminfo[khome]}
+key[End]=${terminfo[kend]}
+key[Insert]=${terminfo[kich1]}
+key[Delete]=${terminfo[kdch1]}
+#key[Up]=${terminfo[kcuu1]}
+#key[Down]=${terminfo[kcud1]}
+#key[Left]=${terminfo[kcub1]}
+#key[Right]=${terminfo[kcuf1]}
+key[PageUp]=${terminfo[kpp]}
+key[PageDown]=${terminfo[knp]}
+
+# setup key accordingly
+[[ -n "${key[Home]}"    ]]  && bindkey  "${key[Home]}"    beginning-of-line
+[[ -n "${key[End]}"     ]]  && bindkey  "${key[End]}"     end-of-line
+[[ -n "${key[Insert]}"  ]]  && bindkey  "${key[Insert]}"  overwrite-mode
+[[ -n "${key[Delete]}"  ]]  && bindkey  "${key[Delete]}"  delete-char
+#[[ -n "${key[Up]}"      ]]  && bindkey  "${key[Up]}"      up-line-or-history
+#[[ -n "${key[Down]}"    ]]  && bindkey  "${key[Down]}"    down-line-or-history
+#[[ -n "${key[Left]}"    ]]  && bindkey  "${key[Left]}"    backward-char
+#[[ -n "${key[Right]}"   ]]  && bindkey  "${key[Right]}"   forward-char
+
+function insert_sudo (){ zle beginning-of-line; zle -U "sudo " }
+zle -N insert-sudo insert_sudo
+bindkey "u" insert-sudo
+
+# History related
+HISTFILE=~/.histfile
+HISTSIZE=1000
+SAVEHIST=500
+setopt APPEND_HISTORY
+# Write after each command
+# setopt INC_APPEND_HISTORY
+# Killer: share history between multiple shells
+setopt SHARE_HISTORY
+# If I type cd and then cd again, only save the last one
+setopt HIST_IGNORE_DUPS
+# Even if there are commands inbetween commands that are the same, still only
+# save the last one
+setopt HIST_IGNORE_ALL_DUPS
+# Pretty    Obvious.  Right?
+setopt HIST_REDUCE_BLANKS
+
+case $TERM in
+    screen*)
+        function sctitle() { print -Pn "\ek$1\e\\"}
+        function precmd() { sctitle "%20<..<%~%<<" }
+        function preexec() { sctitle "%20>..>$1%<<" }
+        export PS1="%{${fg[red]}%}[%D{%H:%M} %20<..<%~%<<]%{$reset_color%} "
+    ;;
+    *)
+        export PS1="%{${fg[red]}%}[%D{%H:%M} %n@%m:%20<..<%~%<<]%{$reset_color%} "
+    ;;
+esac
+
