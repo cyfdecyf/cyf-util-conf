@@ -3,6 +3,13 @@
 #include <stdio.h>
 #include <spinlock.h>
 
+/*
+ * Naive implementation of lock-free stack which does not handle ABA problem.
+ * This works if only one thread is doing pop.
+ *
+ * For lock-free stack which handles ABA problem, see streamflow.
+ */
+
 /* Return 1 if swap happened. */
 static inline unsigned int compare_and_swap(volatile void *address,
         void *old_value, void *new_value)
@@ -17,6 +24,8 @@ static inline unsigned int compare_and_swap(volatile void *address,
 	return prev == old_value;
 }
 
+/* Flag to use pthread mutex or spinlock, useful when we want to compare the
+ * performance of different implementation. */
 /*#define MUTEX*/
 /*#define SPINLOCK*/
 
@@ -108,10 +117,10 @@ Node *pop(Stack *stack) {
 
 /* Testing code. */
 
-#define NITERS 2000000
-#define NTHR 3
+#define NITERS 2000000 /* Number of pushes for each push thread. */
+#define NTHR 3 /* Number of push threads. */
 
-void *producer(void *dummy) {
+void *pusher(void *dummy) {
 	long i, tid = (long) dummy;
 	for (i = 0; i < NITERS; i++) {
 		Node *n = malloc(sizeof(*n));
@@ -130,14 +139,16 @@ static inline void atomic_inc64(volatile unsigned long* address)
 
 volatile unsigned long popcount = 0;
 
-void *consumer(void *dummy) {
+void *poper(void *dummy) {
     Node *n;
 
     while (popcount < NTHR * NITERS) {
         n = pop(&gstack);
         if (n) {
             printf("%d\n", n->val);
-            atomic_inc64(&popcount);
+            /* Only one pop thread. */
+            popcount++;
+            /*atomic_inc64(&popcount);*/
         }
     }
 }
@@ -154,43 +165,29 @@ int main(int argc, const char *argv[]) {
     /* TODO We need more threads to test the scalability of the stack
      * implementation.
      * 
-     * With 3 producer calling push,
+     * With 3 pusher calling push,
      * 1. spinlock give worst performance.
      * 2. mutex is faster than spinlock, but it's running time is not stable.
      * 3. lock free version is fast, and running time is stable.
      */
 
-    pthread_t thr1, thr2, thr3, thr4, thr5;
+    pthread_t thr_push[NTHR], thr_pop;
+    long i;
 
-    if (pthread_create(&thr1, NULL, producer, (void *)0) != 0) {
+    for (i = 0; i < NTHR; i++) {
+        if (pthread_create(&thr_push[i], NULL, pusher, (void *)i) != 0) {
+            perror("thread creating failed");
+        }
+    }
+
+    if (pthread_create(&thr_pop, NULL, poper, NULL) != 0) {
         perror("thread creating failed");
     }
 
-    if (pthread_create(&thr2, NULL, producer, (void *)1) != 0) {
-        perror("thread creating failed");
+    for (i = 0; i < NTHR; i++) {
+        pthread_join(thr_push[i], NULL);
     }
-
-    if (pthread_create(&thr3, NULL, producer, (void *)2) != 0) {
-        perror("thread creating failed");
-    }
-
-/*
- *    if (pthread_create(&thr4, NULL, consumer, NULL) != 0) {
- *        perror("thread creating failed");
- *    }
- *
- *    if (pthread_create(&thr5, NULL, consumer, NULL) != 0) {
- *        perror("thread creating failed");
- *    }
- */
-
-    pthread_join(thr1, NULL);
-    pthread_join(thr2, NULL);
-    pthread_join(thr3, NULL);
-    /*
-     *pthread_join(thr4, NULL);
-     *pthread_join(thr5, NULL);
-     */
+    pthread_join(thr_pop, NULL);
 
     return 0;
 }
