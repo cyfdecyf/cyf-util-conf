@@ -51,7 +51,16 @@ static __inline__ void glue(atomic_and, DATA_BITS)(DATA_TYPE *addr,
     asm volatile(
         LOCK_PREFIX "and"str(SUFFIX)" %1, %0"
         : "+m"(*addr)
-        : "a"(mask)
+        : "r"(mask)
+        : "cc");
+}
+
+static __inline__ void glue(atomic_or, DATA_BITS)(DATA_TYPE *addr,
+        DATA_TYPE mask) {
+    asm volatile(
+        LOCK_PREFIX "or"str(SUFFIX)" %1, %0"
+        : "+m"(*addr)
+        : "r"(mask)
         : "cc");
 }
 
