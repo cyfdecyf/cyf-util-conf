@@ -1,0 +1,16 @@
+$ORIGIN ppi.     ; designates the start of this zone file in the name space, not necessary if included from named.conf
+$TTL 1h          ; default expiration time of all resource records without their own TTL value
+@		IN 	SOA  localhost who.gmail.com. ( ; actually who@gmail.com
+			1 	; serial number of this zone file
+			1d	; slave refresh (1 day)
+			2h	; slave retry time in case of a problem (2 hours)
+			4w	; slave expiration time (4 weeks)
+			1h	; minimum caching time in case of failed lookups (1 hour)
+		)
+		IN	NS	ns			; ns.ppi is a nameserver for ppi
+		IN	MX	1 mail ; 1 is the priority
+		IN	A	10.x.x.x
+ns		IN	A	10.x.x.x
+mail		IN	A	10.x.x.x
+
+serv		IN	A	10.x.x.x

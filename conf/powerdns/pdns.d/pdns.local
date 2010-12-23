@@ -1,0 +1,7 @@
+# Here come the local changes the user made, like configuration of 
+# the several backends that exist.
+launch=gsqlite3
+gsqlite3-database=/etc/powerdns/sqlite3/db.sqlite3
+
+#launch=bind
+#bind-config=/etc/powerdns/bind/named.conf
