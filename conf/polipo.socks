@@ -1,4 +1,5 @@
 socksParentProxy = localhost:1080
+proxyPort = 8123
 diskCacheRoot = ""
 daemonise = true
 logFile = ""
