@@ -1,0 +1,5 @@
+socksParentProxy = localhost:1080
+diskCacheRoot = ""
+daemonise = true
+logFile = ""
+logLevel = 0

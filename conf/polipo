@@ -1,0 +1,7 @@
+proxyAddress = 0.0.0.0
+proxyPort = 2012
+allowedClients = 10.131.251.190
+diskCacheRoot = /Users/alex/.polipo.cache/
+daemonise = true
+logFile = ""
+logLevel = 0

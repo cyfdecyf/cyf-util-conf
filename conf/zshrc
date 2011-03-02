@@ -30,25 +30,37 @@ setopt extendedglob no_case_glob numeric_glob_sort
 unsetopt beep
 
 alias ls='ls --color=auto'
-alias ll='ls --color=auto -lG'
-alias la='ls --color=auto -a'
-alias grep='grep --color=auto'
+alias ll='ls --color=auto -lF'
+alias la='ls --color -a'
 alias rm='rm -i'
-alias sc='screen -S alex'
-alias sr='screen -R alex'
+alias mv='mv -i'
+alias ss='screen -S'
+alias sr='screen -R'
+alias sls='screen -ls'
+alias tls='tmux list-sessions'
+alias tat='tmux attach -t'
+alias less='less -r'
 alias man='LANG=C man'
 alias mpg123='mpg123 -C -v'
 alias vi='vim'
-#alias gvi='gvim -font "Courier 10 Pitch 14"'
-alias gvi='gvim -font "Dejavu Sans Mono 13"'
-alias scsh='rlwrap scsh'
-export BREAK_CHARS="\"#'(),;\|!?[]{}"
-alias sbcl="rlwrap -b \$BREAK_CHARS sbcl"
+alias gvi='gvim'
+alias pyhttpd='python -m SimpleHTTPServer'
+alias mfind='mdfind -name'
+alias sshgfw='ssh -f -N -D 1080 blog'
+alias psshgfw='sshgfw; polipo -c ~/.polipo.socks'
+#alias scsh='rlwrap scsh'
+#export BREAK_CHARS="\"#'(),;\|!?[]{}"
+#alias sbcl="rlwrap -b \$BREAK_CHARS sbcl"
+
+nicemount() {
+    (echo "DEVICE PATH TYPE FLAGS" && mount | awk '$2=$4="";1') | column -t;
+}
 
 alias -g ..='..'
 alias -g ...='../../'
 alias -g G='| egrep'
 alias -g C='| wc -l'
+alias -g L='| less -r'
 
 # Disable ctrl+s
 stty stop ''
@@ -100,15 +112,24 @@ setopt HIST_IGNORE_ALL_DUPS
 # Pretty    Obvious.  Right?
 setopt HIST_REDUCE_BLANKS
 
-case $TERM in
-    screen*)
-        function sctitle() { print -Pn "\ek$1\e\\"}
-        function precmd() { sctitle "%20<..<%~%<<" }
-        function preexec() { sctitle "%20>..>$1%<<" }
-        export PS1="%{${fg[red]}%}[%D{%H:%M} %20<..<%~%<<]%{$reset_color%} "
-    ;;
-    *)
-        export PS1="%{${fg[red]}%}[%D{%H:%M} %n@%m:%20<..<%~%<<]%{$reset_color%} "
-    ;;
-esac
+if [[ -n $STY || -n $TMUX ]]; then
+    function title() { print -Pn "\ek$1\e\\"}
+    function precmd() { title "%20<..<%~%<<" }
+    function preexec() { title "%20>..>$1%<<" }
+    export PS1="%{${fg[cyan]}%}[%D{%H:%M} %20<..<%~%<<]%{$reset_color%} "
+else
+    export PS1="%{${fg[cyan]}%}[%D{%H:%M} %n@%m:%20<..<%~%<<]%{$reset_color%} "
+fi
+
+#case $TERM in
+    #screen*|xterm*)
+        #function title() { print -Pn "\ek$1\e\\"}
+        #function precmd() { title "%20<..<%~%<<" }
+        #function preexec() { title "%20>..>$1%<<" }
+        #export PS1="%{${fg[cyan]}%}[%D{%H:%M} %20<..<%~%<<]%{$reset_color%} "
+    #;;
+    #*)
+        #export PS1="%{${fg[cyan]}%}[%D{%H:%M} %n@%m:%20<..<%~%<<]%{$reset_color%} "
+    #;;
+#esac
 
