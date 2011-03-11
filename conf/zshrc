@@ -57,6 +57,10 @@ nicemount() {
     (echo "DEVICE PATH TYPE FLAGS" && mount | awk '$2=$4="";1') | column -t;
 }
 
+range() {
+    sed -n "$1,$2 p" $3
+}
+
 alias -g ..='..'
 alias -g ...='../../'
 alias -g G='| egrep --color=auto'
