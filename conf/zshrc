@@ -32,6 +32,7 @@ unsetopt beep
 alias ls='ls --color=auto'
 alias ll='ls --color=auto -lF'
 alias la='ls --color -a'
+alias grep='grep --color=auto'
 alias rm='rm -i'
 alias mv='mv -i'
 alias ss='screen -S'
@@ -58,7 +59,7 @@ nicemount() {
 
 alias -g ..='..'
 alias -g ...='../../'
-alias -g G='| egrep'
+alias -g G='| egrep --color=auto'
 alias -g C='| wc -l'
 alias -g L='| less -r'
 
