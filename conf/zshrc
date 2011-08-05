@@ -47,6 +47,7 @@ alias vi='vim'
 alias gvi='gvim'
 alias pyhttpd='python -m SimpleHTTPServer'
 alias mfind='mdfind -name'
+alias dslookup='dscacheutil -q host -a name'
 alias sshgfw='ssh -f -N -D 1080 blog'
 alias psshgfw='sshgfw; polipo -c ~/.polipo.socks'
 #alias scsh='rlwrap scsh'
@@ -138,3 +139,4 @@ fi
     #;;
 #esac
 
+fpath=(~/.zsh/Completion $fpath)
