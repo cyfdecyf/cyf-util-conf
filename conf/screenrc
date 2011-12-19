@@ -44,3 +44,4 @@ screen 1
 #hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f %t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %d/%m %{W}%c %{g}]'
 #hardstatus string '%{= kG}[%{G}%H%{g}][%= %{= kw}%?%-Lw%?%{+b r}(%{y}%n %t%?(%u)%?%{r})%{= w}%?%+Lw%?%?%= %{g}][%{B} %d/%m %{W}%c %{g}]'
 
+altscreen off
