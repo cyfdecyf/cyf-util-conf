@@ -1,5 +1,5 @@
-#include "rwlock.h"
 #include "atomic.h"
+#include "rwlock.h"
 
 /* For various reader-writer lock algorithms, refer to
  * http://www.cs.rochester.edu/research/synchronization/pseudocode/rw.html

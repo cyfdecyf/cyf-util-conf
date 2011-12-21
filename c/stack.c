@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <stdio.h>
-#include <spinlock.h>
+#include "spinlock.h"
 
 /*
  * Naive implementation of lock-free stack which does not handle ABA problem.

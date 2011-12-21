@@ -17,6 +17,8 @@
 #define xstr(s) # s
 #define str(s) xstr(s)
 
+#define __inline__ inline __attribute__((always_inline))
+
 #define LOCK_PREFIX "lock; "
 
 // Is this the correct way to detect 64 system?
@@ -50,8 +52,6 @@ static __inline__ uint8_t atomic_cmpxchg8b(uint32_t *memp,
         : "memory", "cc" );
     return z;
 }
-
-#define __inline__ inline __attribute__((always_inline))
 
 #define DATA_BITS 8
 #include "atomic-template.h"
