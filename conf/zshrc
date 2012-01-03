@@ -44,7 +44,6 @@ alias less='less -r'
 alias man='LANG=C man'
 alias mpg123='mpg123 -C -v'
 alias vi='vim'
-alias gvi='gvim'
 alias pyhttpd='python -m SimpleHTTPServer'
 alias mfind='mdfind -name'
 alias dslookup='dscacheutil -q host -a name'
@@ -53,6 +52,11 @@ alias psshgfw='sshgfw; polipo -c ~/.polipo.socks'
 #alias scsh='rlwrap scsh'
 #export BREAK_CHARS="\"#'(),;\|!?[]{}"
 #alias sbcl="rlwrap -b \$BREAK_CHARS sbcl"
+if [[ `uname` == 'Darwin' ]]; then
+    alias vim='/Applications/MacVim.app/Contents/MacOS/Vim'
+    alias vi='/Applications/MacVim.app/Contents/MacOS/Vim'
+    alias mongod='mongod run --config /usr/local/Cellar/mongodb/1.8.3-x86_64/mongod.conf'
+fi
 
 nicemount() {
     (echo "DEVICE PATH TYPE FLAGS" && mount | awk '$2=$4="";1') | column -t;

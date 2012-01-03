@@ -1,0 +1,3 @@
+#!/bin/sh
+
+exec /usr/bin/corkscrew 10.131.251.185 2012 $*
