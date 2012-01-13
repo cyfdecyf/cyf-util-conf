@@ -23,7 +23,9 @@ void tbb_start_write(tbb_rwlock_t *l) {
              * or, otherwise the reader finding the writer cut in and decrease
              * RINC may get lost. */
             atomic_or16((uint16_t *)l, TBB_WPENDING);
-            while (l->counter & TBB_CRITICAL);
+            while (l->counter & TBB_CRITICAL) {
+                asm volatile ("pause" : : : "memory");
+            }
         }
         /* Try to acquire lock. If previous readers caused spin, pending bit is
          * set and no one will clear it. */
