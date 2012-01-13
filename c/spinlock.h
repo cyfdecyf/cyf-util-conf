@@ -22,7 +22,7 @@ SPINLOCK_ATTR char __testandset(Spinlock *p)
 SPINLOCK_ATTR void spin_lock(Spinlock *lock)
 {
     while (__testandset(lock)) {
-        asm volatile ("pause" : : : "memory");
+        //asm volatile ("pause" : : : "memory");
     }
 }
 
@@ -31,6 +31,7 @@ SPINLOCK_ATTR void spin_unlock(Spinlock *s)
     s->lock = 0;
 }
 
-#define SPIN_LOCK_INIT(l) spin_unlock(l)
+#define SPINLOCK_INIT(l) spin_unlock(l)
+#define SPINLOCK_INITIALIZER { 0 }
 
 #endif /* _SPINLOCK_H */
