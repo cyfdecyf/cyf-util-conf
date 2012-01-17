@@ -7,9 +7,22 @@
 
 #ifdef XCHG
 #include "spinlock-xchg.h"
+#elif defined(K42)
+#include "spinlock-k42.h"
 #else
 #include "spinlock.h"
 #endif
+
+/* It's hard to say which spinlock implement performs best from the test I done
+ * on Intel(R) Xeon(R) CPU E7- 4850  @ 2.00GHz, Dell r910 server. (4 CPUs, 10
+ * cores each)
+ * - For spinlock with cmpxchg, the performance degrades very fast with the
+ * increase of threads. Seems that it does not have good scalability.
+ * - For spinlock with xchg, it has much better scalability than cmpxchg, but it's
+ * slower when there's 2 and 4 cores.
+ * - For k42, The case for 2 threads is extremely bad, for other number of
+ *   threads, the performance is stable and shows good scalability.
+ */
 
 /* Number of total lock/unlock pair.
  * Note we need to ensure the total pair of lock and unlock opeartion are the
@@ -42,7 +55,7 @@ static void calc_time(struct timeval *start, struct timeval *end) {
         end->tv_sec - start->tv_sec,
         end->tv_usec - start->tv_usec
     };
-    printf("Time interval: %d.%06d s\n", interval.tv_sec, interval.tv_usec);
+    printf("%d.%06d\t", interval.tv_sec, interval.tv_usec);
 }
 
 volatile int counter = 0;
@@ -82,7 +95,7 @@ int main(int argc, const char *argv[])
     }
 
     nthr = atoi(argv[1]);
-    printf("using %d threads\n", nthr);
+    /*printf("using %d threads\n", nthr);*/
     thr = calloc(sizeof(*thr), nthr);
 
     // Start thread
