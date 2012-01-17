@@ -1,6 +1,6 @@
-CFLAGS = -O2 -g
+CFLAGS = -O2 -g -std=gnu99
 
-programs = test-rwlock test-atomic test-spinlock
+programs = test-rwlock test-atomic test-spinlock test-spinlock-xchg
 
 all: $(programs)
 
@@ -10,8 +10,11 @@ test-rwlock: test-rwlock.o rwlock.o
 test-atomic: test-atomic.o
 	$(CC) $(CFLAGS) $^ -o $@ 
 
-test-spinlock: test-spinlock.o
+test-spinlock: test-spinlock.c
 	$(CC) $(CFLAGS) -lpthread $^ -o $@
+
+test-spinlock-xchg: test-spinlock.c
+	$(CC) $(CFLAGS) -DXCHG -lpthread $^ -o $@
 
 %:%.c
 	$(CC) $(CFLAGS) $< -o $@

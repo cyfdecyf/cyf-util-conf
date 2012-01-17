@@ -3,35 +3,37 @@
 
 typedef struct {
     volatile char lock;
-} Spinlock;
+} spinlock;
 
 #define SPINLOCK_ATTR static __inline __attribute__((always_inline, no_instrument_function))
 
-SPINLOCK_ATTR char __testandset(Spinlock *p)
+/* Pause instruction to prevent excess processor bus usage */
+#define cpu_relax() asm volatile("pause\n": : :"memory")
+
+SPINLOCK_ATTR char __testandset(spinlock *p)
 {
     char readval = 0;
 
-    __asm__ __volatile__ (
-			"lock; cmpxchgb %b2, %0"
-			: "+m" (p->lock), "+a" (readval)
-			: "r" (1)
-			: "cc");
+    asm volatile (
+            "lock; cmpxchgb %b2, %0"
+            : "+m" (p->lock), "+a" (readval)
+            : "r" (1)
+            : "cc");
     return readval;
 }
 
-SPINLOCK_ATTR void spin_lock(Spinlock *lock)
+SPINLOCK_ATTR void spin_lock(spinlock *lock)
 {
     while (__testandset(lock)) {
-        //asm volatile ("pause" : : : "memory");
+        cpu_relax();
     }
 }
 
-SPINLOCK_ATTR void spin_unlock(Spinlock *s)
+SPINLOCK_ATTR void spin_unlock(spinlock *s)
 {
     s->lock = 0;
 }
 
-#define SPINLOCK_INIT(l) spin_unlock(l)
 #define SPINLOCK_INITIALIZER { 0 }
 
 #endif /* _SPINLOCK_H */
