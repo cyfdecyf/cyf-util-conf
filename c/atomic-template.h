@@ -46,6 +46,18 @@ static __inline__ DATA_TYPE glue(atomic_cmpxchg, DATA_BITS)(DATA_TYPE *addr,
     return oldval;
 }
 
+/* We don't need the lock prefix for xchg. */
+static __inline__ DATA_TYPE glue(xchg, DATA_BITS)(DATA_TYPE *addr, DATA_TYPE val)
+{
+    asm volatile(
+            "xchg"str(SUFFIX)" %0,%1"
+            :"=r" (val)
+            :"m" (*addr), "0" (val)
+            :"memory");
+
+    return val;
+}
+
 static __inline__ void glue(atomic_and, DATA_BITS)(DATA_TYPE *addr,
         DATA_TYPE mask) {
     asm volatile(
