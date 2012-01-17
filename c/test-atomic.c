@@ -47,7 +47,7 @@ int main(int argc, const char *argv[])
     assert(atomic_cmpxchg16b(m128, -1, 0, 0xf, 0xf0) == 0);
 
     // Test xchg
-    volatile uint64_t addr = 2;
+    uint64_t addr = 2;
     assert(xchg64(&addr, 1) == 2);
     assert(addr == 1);
 
