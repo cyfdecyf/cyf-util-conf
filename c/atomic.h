@@ -19,6 +19,12 @@
 
 #define __inline__ inline __attribute__((always_inline))
 
+/* Compile read-write barrier */
+#define barrier() asm volatile("": : :"memory")
+
+/* Pause instruction to prevent excess processor bus usage */
+#define cpu_relax() asm volatile("pause\n": : :"memory")
+
 #define LOCK_PREFIX "lock; "
 
 // Is this the correct way to detect 64 system?
