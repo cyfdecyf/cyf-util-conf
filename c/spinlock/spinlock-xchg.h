@@ -26,7 +26,7 @@ typedef unsigned char spinlock;
 
 #define SPINLOCK_INITIALIZER 0
 
-static void spin_lock(spinlock *lock)
+static inline void spin_lock(spinlock *lock)
 {
     while (1) {
         if (!xchg_8(lock, BUSY)) return;
@@ -35,13 +35,13 @@ static void spin_lock(spinlock *lock)
     }
 }
 
-static void spin_unlock(spinlock *lock)
+static inline void spin_unlock(spinlock *lock)
 {
     barrier();
     *lock = 0;
 }
 
-static int spin_trylock(spinlock *lock)
+static inline int spin_trylock(spinlock *lock)
 {
     return xchg_8(lock, BUSY);
 }

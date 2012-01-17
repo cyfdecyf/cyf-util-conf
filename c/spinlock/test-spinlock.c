@@ -9,19 +9,34 @@
 #include "spinlock-xchg.h"
 #elif defined(K42)
 #include "spinlock-k42.h"
+#elif defined(MCS)
+#include "spinlock-mcs.h"
+#elif defined(TICKET)
+#include "spinlock-ticket.h"
 #else
 #include "spinlock.h"
 #endif
 
-/* It's hard to say which spinlock implement performs best from the test I done
- * on Intel(R) Xeon(R) CPU E7- 4850  @ 2.00GHz, Dell r910 server. (4 CPUs, 10
- * cores each)
+/* It's hard to say which spinlock implementation performs best. I guess the
+ * performance depends on CPU topology which will affect the cache coherence
+ * messages, and maybe other factors.
+ *
+ * Here's the result on Dell R910 server (4 CPUs, 10 cores each), with Intel(R)
+ * Xeon(R) CPU E7- 4850  @ 2.00GHz
+ *
  * - For spinlock with cmpxchg, the performance degrades very fast with the
  * increase of threads. Seems that it does not have good scalability.
+ *
  * - For spinlock with xchg, it has much better scalability than cmpxchg, but it's
  * slower when there's 2 and 4 cores.
- * - For k42, The case for 2 threads is extremely bad, for other number of
+ *
+ * - For K42, The case for 2 threads is extremely bad, for other number of
  *   threads, the performance is stable and shows good scalability.
+ *
+ * - MCS spinlock has similar performance with K42, and does not have the
+ *   extremely bad 2 thread case.
+ *
+ * - Ticket spinlock actually performs very badly.
  */
 
 /* Number of total lock/unlock pair.
@@ -59,11 +74,18 @@ static void calc_time(struct timeval *start, struct timeval *end) {
 }
 
 volatile int counter = 0;
-spinlock sl = SPINLOCK_INITIALIZER;
+#ifndef MCS
+spinlock sl;
+#else
+mcs_lock cnt_lock = NULL;
+#endif
 
 void *inc_thread(void *id) {
     int n = N_PAIR / nthr;
     assert(n * nthr == N_PAIR);
+#ifdef MCS
+    mcs_lock_t local_lock;
+#endif
     wait_flag(&wflag, nthr);
 
     if (((long) id == 0)) {
@@ -73,9 +95,15 @@ void *inc_thread(void *id) {
 
     /* Start lock unlock test. */
     for (int i = 0; i < n; i++) {
+#ifndef MCS
         spin_lock(&sl);
         counter++;
         spin_unlock(&sl);
+#else
+        lock_mcs(&cnt_lock, &local_lock);
+        counter++;
+        unlock_mcs(&cnt_lock, &local_lock);
+#endif
     }
 
     if (atomic_fetch_and_add32((uint32_t *)&wflag, -1) == 1) {

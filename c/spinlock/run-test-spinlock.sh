@@ -9,11 +9,17 @@ function run_test() {
     done
 }
 
-#echo "test spin lock using cmpxchg"
-#run_test "test-spinlock"
+echo "test spin lock using cmpxchg"
+run_test "test-spinlock"
 
-#echo "test spin lock using xchg"
-#run_test "test-spinlock-xchg"
+echo "test spin lock using xchg"
+run_test "test-spinlock-xchg"
 
 echo "test spin lock using k42"
 run_test "test-spinlock-k42"
+
+echo "test spin lock using mcs"
+run_test "test-spinlock-mcs"
+
+echo "test spin lock using ticket"
+run_test "test-spinlock-ticket"

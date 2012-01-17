@@ -13,6 +13,8 @@
 
 #define cmpxchg(P, O, N) __sync_val_compare_and_swap((P), (O), (N))
 
+#define barrier() asm volatile("": : :"memory")
+
 static inline void *xchg_64(void *ptr, void *x)
 {
     __asm__ __volatile__("xchgq %0,%1"
@@ -30,7 +32,7 @@ struct k42lock
     k42lock *tail;
 };
 
-static void k42_lock(k42lock *l)
+static inline void k42_lock(k42lock *l)
 {
     k42lock me;
     k42lock *pred, *succ;
@@ -70,8 +72,7 @@ static void k42_lock(k42lock *l)
     }
 }
 
-
-static void k42_unlock(k42lock *l)
+static inline void k42_unlock(k42lock *l)
 {
     k42lock *succ = l->next;
     
@@ -88,7 +89,7 @@ static void k42_unlock(k42lock *l)
     succ->tail = NULL;
 }
 
-static int k42_trylock(k42lock *l)
+static inline int k42_trylock(k42lock *l)
 {
     if (!cmpxchg(&l->tail, NULL, &l->next)) return 0;
     
