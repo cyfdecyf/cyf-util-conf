@@ -1,8 +1,11 @@
+#define _GNU_SOURCE
 #include <pthread.h>
+#include <sched.h>
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
+#include <error.h>
 #include "atomic.h"
 
 #ifdef XCHG
@@ -20,6 +23,11 @@
 /* It's hard to say which spinlock implementation performs best. I guess the
  * performance depends on CPU topology which will affect the cache coherence
  * messages, and maybe other factors.
+ *
+ * The result of binding threads to the same physical core shows that when
+ * threads are on a single physical CPU, contention will not cause severe
+ * performance degradation. But there's one exception, cmpxchg. It's performance
+ * will degrade no matter the threads resides on the which physical CPU.
  *
  * Here's the result on Dell R910 server (4 CPUs, 10 cores each), with Intel(R)
  * Xeon(R) CPU E7- 4850  @ 2.00GHz
@@ -43,6 +51,10 @@
  * Note we need to ensure the total pair of lock and unlock opeartion are the
  * same no matter how many threads are used. */
 #define N_PAIR 16000000
+
+/* Bind threads to specific cores. The goal is to make threads locate on the
+ * same physical CPU. */
+/*#define BIND_CORE*/
 
 static int nthr = 0;
 
@@ -80,11 +92,33 @@ spinlock sl;
 mcs_lock cnt_lock = NULL;
 #endif
 
+void bind_core(int threadid) {
+    /* cores with logical id 4x   is on CPU physical id 0 */
+    /* cores with logical id 4x+1 is on CPU physical id 1 */
+    int phys_id = threadid / 10;
+    int core = threadid % 10;
+
+    int logical_id = 4 * core + phys_id;
+    printf("thread %ld bind to logical core %ld on physical id %ld\n", threadid, logical_id, phys_id);
+
+    cpu_set_t set;
+    CPU_ZERO(&set);
+    CPU_SET(logical_id, &set);
+
+    if (sched_setaffinity(0, sizeof(set), &set) != 0) {
+        perror("Set affinity failed");
+        exit(EXIT_FAILURE);
+    }
+}
+
 void *inc_thread(void *id) {
     int n = N_PAIR / nthr;
     assert(n * nthr == N_PAIR);
 #ifdef MCS
     mcs_lock_t local_lock;
+#endif
+#ifdef BIND_CORE
+    bind_core((int)(long)(id));
 #endif
     wait_flag(&wflag, nthr);
 
