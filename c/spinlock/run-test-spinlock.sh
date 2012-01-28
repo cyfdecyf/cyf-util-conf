@@ -10,7 +10,7 @@ function run_test() {
 }
 
 echo "test spin lock using cmpxchg"
-run_test "test-spinlock"
+run_test "test-spinlock-cmpxchg"
 
 echo "test spin lock using xchg"
 run_test "test-spinlock-xchg"

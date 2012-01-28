@@ -17,7 +17,7 @@
 #elif defined(TICKET)
 #include "spinlock-ticket.h"
 #else
-#include "spinlock.h"
+#include "spinlock-cmpxchg.h"
 #endif
 
 /* It's hard to say which spinlock implementation performs best. I guess the

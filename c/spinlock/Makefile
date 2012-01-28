@@ -1,11 +1,11 @@
 CFLAGS = -O2 -g -std=gnu99 -I..
 
-programs = test-spinlock test-spinlock-xchg test-spinlock-k42 \
+programs = test-spinlock-cmpxchg test-spinlock-xchg test-spinlock-k42 \
 		   test-spinlock-mcs test-spinlock-ticket
 
 all: $(programs)
 
-test-spinlock: test-spinlock.c
+test-spinlock-cmpxchg: test-spinlock.c
 	$(CC) $(CFLAGS) -lpthread $^ -o $@
 
 test-spinlock-xchg: test-spinlock.c
