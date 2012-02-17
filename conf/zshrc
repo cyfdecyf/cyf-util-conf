@@ -20,14 +20,34 @@ colors
 
 zstyle :compinstall filename '~/.zshrc'
 
-# compdef can be used after compinit is loaded.
-compdef '_files -g "*.mp3"' mpg123
-compdef '_files -g "*.tar.gz"' tar
-
 setopt emacs
 setopt autocd correct rm_star_wait rc_expand_param
 setopt extendedglob no_case_glob numeric_glob_sort
 unsetopt beep
+
+#############################
+# Completion settings
+#############################
+
+# compdef can be used after compinit is loaded.
+compdef '_files -g "*.tar.gz"' tar
+compdef '_files -g "*.tar.bz2"' tar
+
+###################
+# For Go language
+###################
+prefixes=(5 6 8)
+for p in $prefixes; do
+	compctl -g "*.${p}" ${p}l
+	compctl -g "*.go" ${p}g
+done
+
+# standard go tools
+compctl -g "*.go" gofmt
+
+#############################
+# Aliases
+#############################
 
 alias ls='ls --color=auto'
 alias ll='ls --color=auto -lF'
@@ -42,7 +62,6 @@ alias tls='tmux list-sessions'
 alias tat='tmux attach -t'
 alias less='less -r'
 alias man='LANG=C man'
-alias mpg123='mpg123 -C -v'
 alias vi='vim'
 alias pyhttpd='python -m SimpleHTTPServer'
 alias mfind='mdfind -name'
@@ -58,6 +77,16 @@ if [[ `uname` == 'Darwin' ]]; then
     alias mongod='mongod run --config /usr/local/Cellar/mongodb/1.8.3-x86_64/mongod.conf'
 fi
 
+alias -g ..='..'
+alias -g ...='../../'
+alias -g G='| egrep --color=auto'
+alias -g C='| wc -l'
+alias -g L='| less -r'
+
+#############################
+# Utility function
+#############################
+
 nicemount() {
     (echo "DEVICE PATH TYPE FLAGS" && mount | awk '$2=$4="";1') | column -t;
 }
@@ -66,11 +95,13 @@ range() {
     sed -n "$1,$2 p" $3
 }
 
-alias -g ..='..'
-alias -g ...='../../'
-alias -g G='| egrep --color=auto'
-alias -g C='| wc -l'
-alias -g L='| less -r'
+ppp() {
+    ppp.lua $1 $2 | pbcopy
+}
+
+##############################
+# Key binding
+##############################
 
 # Disable ctrl+s
 stty stop ''
@@ -105,7 +136,10 @@ function insert_sudo (){ zle beginning-of-line; zle -U "sudo " }
 zle -N insert-sudo insert_sudo
 bindkey "u" insert-sudo
 
+##############################
 # History related
+##############################
+
 HISTFILE=~/.histfile
 HISTSIZE=1000
 SAVEHIST=500
@@ -121,6 +155,10 @@ setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_ALL_DUPS
 # Pretty    Obvious.  Right?
 setopt HIST_REDUCE_BLANKS
+
+##############################
+# Update window title for screen and tmux
+##############################
 
 if [[ -n $STY || -n $TMUX ]]; then
     function title() { print -Pn "\ek$1\e\\"}
@@ -142,5 +180,7 @@ fi
         #export PS1="%{${fg[cyan]}%}[%D{%H:%M} %n@%m:%20<..<%~%<<]%{$reset_color%} "
     #;;
 #esac
+
+# For rvm
 
 fpath=(~/.zsh/Completion $fpath)

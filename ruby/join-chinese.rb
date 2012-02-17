@@ -14,7 +14,7 @@ class String
   def join_chinese
     unless @chinese_regex
       han = '\p{Han}|[，。？；：‘’“”、！……（）]'
-      @chinese_regex = Regexp.new("(#{han})\n(#{han})", Regexp::MULTILINE)
+      @chinese_regex = Regexp.new("(#{han}) *\n *(#{han})", Regexp::MULTILINE)
     end
     gsub(@chinese_regex, '\1\2')
   end

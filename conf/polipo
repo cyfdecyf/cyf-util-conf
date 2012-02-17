@@ -1,7 +1,8 @@
 proxyAddress = 0.0.0.0
 proxyPort = 2012
-allowedClients = 10.131.251.185, 10.171.5.88, 10.131.249.76, 10.131.250.92, 10.131.251.206
-diskCacheRoot = /Users/alex/.polipo.cache/
+#authCredentials = user:passwd
+allowedClients = 10.131.250.92, 
+diskCacheRoot = ""
 daemonise = true
 logFile = ""
 logLevel = 0
