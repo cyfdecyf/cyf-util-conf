@@ -1,0 +1,14 @@
+#!/usr/bin/expect
+set timeout 8
+
+spawn /usr/bin/ssh -D 1080 -g blog
+# 这里的 user 为你自己的用户名，yourserver.com  为你自己的服务器域名或 ip
+#expect {
+#"password:" {
+#send "password\r"
+#}
+#}
+interact {
+timeout 8 { send " "}
+}
+

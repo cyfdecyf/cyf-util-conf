@@ -75,6 +75,8 @@ if [[ `uname` == 'Darwin' ]]; then
     alias vim='/Applications/MacVim.app/Contents/MacOS/Vim'
     alias vi='/Applications/MacVim.app/Contents/MacOS/Vim'
     alias mongod='mongod run --config /usr/local/Cellar/mongodb/1.8.3-x86_64/mongod.conf'
+    alias pg_start='pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start'
+    alias pg_stop='pg_ctl -D /usr/local/var/postgres stop -s -m fast'
 fi
 
 alias -g ..='..'
@@ -184,3 +186,4 @@ fi
 # For rvm
 
 fpath=(~/.zsh/Completion $fpath)
+
