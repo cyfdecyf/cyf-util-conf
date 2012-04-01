@@ -1,9 +1,11 @@
 var direct = 'DIRECT';
-var http_proxy = 'PROXY 10.131.201.111:2012; DIRECT';
+//var http_proxy = 'PROXY 10.131.201.111:2012; DIRECT';
+var http_proxy = 'PROXY 10.131.250.152:2012; DIRECT';
 
 var gfwed = {
 	"akamai.net": true,
 	"akamaihd.net": true,
+	"amazon.com": true,
 	"appspot.com": true,
 	"bitly.com": true,
 	"blogger.com": true,
@@ -11,6 +13,7 @@ var gfwed = {
 	"cl.ly": true,
 	"facebook.com": true,
 	"fbcdn.net": true,
+	"feedburner.com": true,
 	"feedsportal.com": true,
 	"gmail.com": true,
 	"goo.gl": true,
@@ -18,6 +21,7 @@ var gfwed = {
 	"j.mp": true,
 	"openvpn.net": true,
 	"osfoora.com": true,
+	"posterous.com": true,
 	"t.co": true,
 	"twimg.com": true,
 	"twitpic.com": true,
@@ -39,8 +43,8 @@ function host2domain(host) {
 	if (dotpos === -1)
 		return host;
 	return host.substring(dotpos + 1);
-}
+};
 
 function FindProxyForURL(url, host) {
 	return gfwed[host2domain(host)] ? http_proxy : direct;
-}
+};
