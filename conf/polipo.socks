@@ -3,4 +3,7 @@ proxyPort = 8123
 diskCacheRoot = ""
 daemonise = true
 logFile = ""
+#logLevel = 7
 logLevel = 0
+dnsNameServer = 74.82.42.42
+# vim: ft=sh
