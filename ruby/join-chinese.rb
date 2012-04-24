@@ -11,12 +11,13 @@ class String
   # Unfortunately, we don't have a specific category to specify Chinese
   # punctuations, so I have to list them manually. (Not complete, just the most
   # common ones here.)
+  han = '\p{Han}|[，。？；：‘’“”、！……（）]'
+  ChineseRegex = /(#{han}) *\n *(#{han})/m
   def join_chinese
-    unless @chinese_regex
-      han = '\p{Han}|[，。？；：‘’“”、！……（）]'
-      @chinese_regex = Regexp.new("(#{han}) *\n *(#{han})", Regexp::MULTILINE)
-    end
-    gsub(@chinese_regex, '\1\2')
+    gsub(ChineseRegex, '\1\2')
+  end
+  def join_chinese!
+    gsub!(ChineseRegex, '\1\2')
   end
 end
 
