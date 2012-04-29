@@ -1,38 +1,45 @@
 var direct = 'DIRECT';
-//var http_proxy = 'PROXY 10.131.201.111:2012; DIRECT';
-var http_proxy = 'PROXY 10.131.250.152:2012; DIRECT';
+//var http_proxy = 'SOCKS5 127.0.0.1:1080; SOCKS 127.0.0.1:1080; DIRECT';
+var http_proxy = 'PROXY 127.0.0.1:8123; DIRECT';
 
-var gfwed = {
-	"akamai.net": true,
-	"akamaihd.net": true,
-	"amazon.com": true,
-	"appspot.com": true,
-	"bitly.com": true,
-	"blogger.com": true,
-	"blogspot.com": true,
-	"cl.ly": true,
-	"facebook.com": true,
-	"fbcdn.net": true,
-	"feedburner.com": true,
-	"feedsportal.com": true,
-	"gmail.com": true,
-	"goo.gl": true,
-	"google.com": true,
-	"j.mp": true,
-	"openvpn.net": true,
-	"osfoora.com": true,
-	"posterous.com": true,
-	"t.co": true,
-	"twimg.com": true,
-	"twitpic.com": true,
-	"twitter.com": true,
-	"vimeo.com": true,
-	"wordpress.com": true,
-	"yfrog.com": true,
-	"youtube.com": true,
-	"ytimg.com": true,
-	"zzzzzzz last item for easy sorting": false
-};
+var gfwed_list = [
+	"akamai.net",
+	"akamaihd.net",
+	"amazon.com",
+	"appspot.com",
+	"archive.org",
+	"bitly.com",
+	"blogger.com",
+	"blogspot.com",
+	"cl.ly",
+	"facebook.com",
+	"fbcdn.net",
+	"feedburner.com",
+	"feedsportal.com",
+	"gmail.com",
+	"goo.gl",
+	"google.com",
+	"j.mp",
+	"mediafire.com",
+	"openvpn.net",
+	"osfoora.com",
+	"posterous.com",
+	"rapidshare.com",
+	"t.co",
+	"twimg.com",
+	"twitpic.com",
+	"twitter.com",
+	"vimeo.com",
+	"wordpress.com",
+	"yfrog.com",
+	"youtube.com",
+	"ytimg.com"
+];
+
+var gfwed = {};
+for (var i = 0; i < gfwed_list.length; i += 1) {
+	gfwed[gfwed_list[i]] = true;
+}
 
 function host2domain(host) {
 	var dotpos = host.lastIndexOf(".");
