@@ -1,0 +1,11 @@
+#!/bin/bash
+
+polipo -c ~/.polipo.socks
+while true; do
+    # Do not use -f to go background so we can restart ssh connection upon exit.
+    # -n redirects stdin from /dev/null
+    # -N do not execute remote command
+    ssh -n -N -D 1080 blog
+    echo "reconnecting in 1 second"
+    sleep 1
+done
