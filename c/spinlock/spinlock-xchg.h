@@ -14,7 +14,7 @@
 static inline unsigned short xchg_8(void *ptr, unsigned char x)
 {
     __asm__ __volatile__("xchgb %0,%1"
-                :"=r" ((unsigned char) x)
+                :"=r" (x)
                 :"m" (*(volatile unsigned char *)ptr), "0" (x)
                 :"memory");
 

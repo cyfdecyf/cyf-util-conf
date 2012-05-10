@@ -12,9 +12,9 @@ class String
   # punctuations, so I have to list them manually. (Not complete, just the most
   # common ones here.)
   han = '\p{Han}|[，。？；：‘’“”、！……（）]'
-  ChineseRegex = /(#{han}) *\n *(#{han})/m
+  @@chinese_regex = /(#{han}) *\n *(#{han})/m
   def join_chinese
-    gsub(ChineseRegex, '\1\2')
+    gsub(@@chinese_regex, '\1\2')
   end
   def join_chinese!
     gsub!(ChineseRegex, '\1\2')
