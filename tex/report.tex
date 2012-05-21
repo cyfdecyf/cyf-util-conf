@@ -1,0 +1,66 @@
+%\documentclass[12pt,a4paper]{article}
+\documentclass[12pt,a4paper]{scrartcl}
+\usepackage[top=1in,bottom=1in,left=0.8in,right=0.8in]{geometry}
+% \documentclass[fontsize=12pt,paper=a4]{scrlttr2}
+\usepackage{syntonly}
+%\usepackage{times}
+\usepackage{pslatex} % Same as times but uses narrowed Courier, so this is preferred
+%\usepackage[scaled=0.7]{luximono}
+\usepackage[T1]{fontenc}
+%\usepackage{listings}
+%\usepackage{graphicx}
+\usepackage{indentfirst}
+\usepackage{CJKutf8}
+\usepackage[
+unicode,
+dvipdfm,
+colorlinks=true,
+linkcolor=blue,
+citecolor=blue,
+urlcolor=blue,
+bookmarks=true,
+bookmarksnumbered=true,
+bookmarksopen=false,
+pdfstartview=FitH,
+pdfpagemode=UseNone, %UseOutlines, FullScreen, UseThumbs
+plainpages=false,
+pdfhighlight=/P
+]{hyperref}
+
+%\lstloadlanguages{C}
+%\lstset{basicstyle=\footnotesize, keywordstyle=\color{blue}\bfseries, language=C,
+%stringstyle=\ttfamily, numbers=left, numberstyle=\tiny, stepnumber=1,
+%frame=single, numbersep=5pt, flexiblecolumns=true, xleftmargin=50pt,
+%xrightmargin=50pt}
+
+%\lstnewenvironment{Clist}{\lstset{language=C}}{}
+
+% use ebb to generate bb files.
+%\DeclareGraphicsRule{.png}{eps}{.bb}{}
+
+%\syntaxonly
+
+\begin{document}
+\begin{CJK*}{UTF8}{song}
+
+    \hypersetup{
+    pdfauthor={陈宇飞 <cyfdecyf@gmail.com>},
+    pdftitle={},
+    pdfkeywords={}
+    }
+
+    \CJKcaption{zh-Hans}
+    \CJKindent
+    \CJKtilde
+    \title{}
+    \author{陈宇飞}
+    \date{}
+    \maketitle
+    %\tableofcontents %\clearpage\listoffigures %\clearpage\listoftables
+
+
+    
+
+    \newpage
+\end{CJK*}
+\end{document}

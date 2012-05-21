@@ -1,0 +1,153 @@
+% $Header: /cvsroot/latex-beamer/latex-beamer/solutions/generic-talks/generic-ornate-15min-45min.en.tex,v 1.4 2004/10/07 20:53:08 tantau Exp $
+
+\documentclass[unicode, hyperref={pdfpagemode=None}]{beamer}
+
+% This file is a solution template for:
+
+% - Giving a talk on some subject.
+% - The talk is between 15min and 45min long.
+% - Style is ornate.
+
+\mode<presentation>
+{
+\usetheme{JuanLesPins}
+%\usefonttheme[onlylarge]{structuresmallcapsserif}
+%\usefonttheme[onlysmall]{structurebold}
+
+% Complete color theme
+%\usecolortheme[overlystylish]{albatross}
+%\usecolortheme{orchid}
+
+% Outer color theme
+%\usecolortheme{whale}
+%\usecolortheme{seahorse}
+
+% Inner color theme
+%\usecolortheme{rose}
+%\usecolortheme{lily}
+
+%\setbeamercolor{frametitle}{fg=black,bg=white}
+
+\setbeamercovered{transparent}
+% or whatever (possibly just delete it)
+
+\definecolor{topcolour}{rgb}{0.98,0.98,0.913}
+\definecolor{middlecolour}{rgb}{0.952,0.952,0.952}
+\definecolor{bottomcolor}{rgb}{0.901,0.901,1}
+\setbeamertemplate{background canvas}[vertical shading]
+[bottom=bottomcolor, middle=middlecolour, top=topcolour]
+}
+
+%\usepackage{CJKutf8}
+\usepackage{syntonly}
+\usepackage{alltt}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{times}
+\usepackage{multimedia}
+\usepackage[T1]{fontenc}
+% Or whatever. Note that the encoding and the font should match. If T1
+% does not look nice, try deleting the line with the fontenc.
+
+%\syntaxonly
+
+\begin{document}
+%\begin{CJK*}{UTF8}{song}
+\title
+{Title}
+
+\subtitle % (optional, use only with long paper titles)
+{}
+
+\author % (optional, use only with lots of authors)
+{陈宇飞\\
+\quad \\
+\scriptsize{Email: cyfdecyf@gmail.com}}
+
+% - Use the \inst{?} command only if the authors have different
+%   affiliation.
+\institute[计算机科学与技术学院] % (optional, but mostly needed)
+{
+复旦大学
+}
+
+\date {} % (optional)
+
+\subject{Talks}
+% This is only inserted into the PDF information catalog. Can be left
+% out.
+
+%\pgfdeclareimage[height=.35cm]{logo}{fsa-logo}
+%\logo{\pgfuseimage{logo}}
+
+% If you have a file called "university-logo-filename.xxx", where xxx
+% is a graphic format that can be processed by latex or pdflatex,
+% resp., then you can add a logo as follows:
+
+% \pgfdeclareimage[height=0.5cm]{university-logo}{university-logo-filename}
+% \logo{\pgfuseimage{university-logo}}
+
+% Delete this, if you do not want the table of contents to pop up at
+% the beginning of each subsection:
+\AtBeginSection[] {
+\begin{frame}<beamer>
+    \frametitle{Outline}
+    \tableofcontents[currentsection]
+\end{frame}
+}
+
+\AtBeginSubsection[] {
+\begin{frame}<beamer>
+    \frametitle{Outline}
+    \tableofcontents[currentsection,currentsubsection]
+\end{frame}
+}
+
+% If you wish to uncover everything in a step-wise fashion, uncomment
+% the following command:
+
+%\beamerdefaultoverlayspecification{<+->}
+
+\begin{frame}
+    \titlepage
+\end{frame}
+
+% Since this a solution template for a generic talk, very little can
+% be said about how it should be structured. However, the talk length
+% of between 15min and 45min and the theme suggest that you stick to
+% the following rules:
+
+% - Exactly two or three sections (other than the summary).
+% - At *most* three subsections per section.
+% - Talk about 30s to 2min per frame. So there should be between about
+%   15 and 30 frames, all told.
+
+\begin{frame}
+    \frametitle{What I will talk about}
+    \begin{itemize}
+        \item
+            \pause
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{References and online resources}
+    \begin{thebibliography}{9}
+        \bibitem{RFCutf8} IETF RFC2279, \textit{UTF-8, a transformation format of
+            ISO 10646}
+    \end{thebibliography}
+\end{frame}
+
+\begin{frame}
+    \begin{center}
+        {\huge 
+        %\nbs \\
+        Thanks for your time }
+    \end{center}
+\end{frame}
+
+\newpage
+%\end{CJK*}
+\end{document}
+
