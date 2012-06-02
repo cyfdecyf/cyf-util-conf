@@ -21,11 +21,11 @@ cxx-link-command = $(call quiet-command, $(CXX) $^ $(CXXLDFLAGS) -o $@ $1, "  LI
 # each time foo.c/h is changed.
 .%.d: %.c
 	$(call quiet-command, $(CC) -MM -MF $@ -MT $@ -MT $(subst .c,.o, $<) $<, "  DEP   $@")
-.%.d: %.cpp
-	$(call quiet-command, $(CXX) -MM -MF $@ -MT $@ -MT $(subst .c,.o, $<) $<, "  DEP   $@")
+.%.dpp: %.cpp
+	$(call quiet-command, $(CXX) -MM -MF $@ -MT $@ -MT $(subst .cpp,.o, $<) $<, "  DEP   $@")
 
 dependencies = $(patsubst %.c, .%.d, $(wildcard *.c)))
-dependencies += $(patsubst %.cpp, .%.d, $(wildcard *.cpp)))
+dependencies += $(patsubst %.cpp, .%.dpp, $(wildcard *.cpp)))
 # It's possible to use foreach to include files in several directories
 # dependencies = $(patsubst %.c, $(DEPDIR)/%.d, $(foreach dir, ., $(wildcard $(dir)/*.c)))))
 
