@@ -24,8 +24,8 @@ cxx-link-command = $(call quiet-command, $(CXX) $^ $(CXXLDFLAGS) -o $@ $1, "  LI
 .%.dpp: %.cpp
 	$(call quiet-command, $(CXX) -MM -MF $@ -MT $@ -MT $(subst .cpp,.o, $<) $<, "  DEP   $@")
 
-dependencies = $(patsubst %.c, .%.d, $(wildcard *.c)))
-dependencies += $(patsubst %.cpp, .%.dpp, $(wildcard *.cpp)))
+dependencies = $(patsubst %.c, .%.d, $(wildcard *.c))
+dependencies += $(patsubst %.cpp, .%.dpp, $(wildcard *.cpp))
 # It's possible to use foreach to include files in several directories
 # dependencies = $(patsubst %.c, $(DEPDIR)/%.d, $(foreach dir, ., $(wildcard $(dir)/*.c)))))
 
