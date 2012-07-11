@@ -6,8 +6,8 @@ quiet-command = $(if $(V),$1,$(if $2,@echo $2 && $1, @$1))
 # Pass additional options as the first argument.
 # We can use also use target/pattern specific Variables to redefine LDFLAGS,
 # but that's not clear and flexible as this approach.
-cc-link-command = $(call quiet-command, $(CC) $^ $(LDFLAGS) -o $@ $1, "  LINK  $@")
-cxx-link-command = $(call quiet-command, $(CXX) $^ $(CXXLDFLAGS) -o $@ $1, "  LINK  $@")
+cc-link = $(call quiet-command, $(CC) $^ $(LDFLAGS) -o $@ $1, "  LINK  $@")
+cxx-link = $(call quiet-command, $(CXX) $^ $(CXXLDFLAGS) -o $@ $1, "  LINK  $@")
 
 %.o: %.c
 	$(call quiet-command, $(CC) $(CFLAGS) -c -o $@ $<, "  CC    $@")
