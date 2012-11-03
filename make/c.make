@@ -20,9 +20,9 @@ cxx-link = $(call quiet-command, $(CXX) $^ $(CXXLDFLAGS) -o $@ $1, "  LINK  $@")
 # Generate rules like "foo.d foo.o: foo.c foo.h", so foo.d will get updated
 # each time foo.c/h is changed.
 .%.d: %.c
-	$(call quiet-command, $(CC) -MM -MF $@ -MT $@ -MT $(subst .c,.o, $<) $<, "  DEP   $@")
+	$(call quiet-command, $(CC) $(CFLAGS) -MM -MF $@ -MT $@ -MT $(subst .c,.o, $<) $<, "  DEP   $@")
 .%.dpp: %.cpp
-	$(call quiet-command, $(CXX) -MM -MF $@ -MT $@ -MT $(subst .cpp,.o, $<) $<, "  DEP   $@")
+	$(call quiet-command, $(CXX) $(CXXFLAGS) -MM -MF $@ -MT $@ -MT $(subst .cpp,.o, $<) $<, "  DEP   $@")
 
 dependencies = $(patsubst %.c, .%.d, $(wildcard *.c))
 dependencies += $(patsubst %.cpp, .%.dpp, $(wildcard *.cpp))
