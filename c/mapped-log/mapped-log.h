@@ -20,7 +20,7 @@ typedef struct {
 } MappedLog;
 
 // Create a new log. inc_size specifies how much space should enlarge_mapped_log
-// increase upon each call.
+// increase upon each call, it should be a MULTIPLE OF PAGE SIZE (4096).
 // Return 0 on success, -1 on error.
 int new_mapped_log(const char *path, MappedLog *log, int inc_size);
 
