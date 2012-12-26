@@ -23,3 +23,6 @@ run_test "test-spinlock-mcs"
 
 echo "test spin lock using ticket"
 run_test "test-spinlock-ticket"
+
+echo "test spin lock using pthread"
+run_test "test-spinlock-pthread"

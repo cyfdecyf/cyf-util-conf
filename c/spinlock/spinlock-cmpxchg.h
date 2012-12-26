@@ -1,5 +1,5 @@
-#ifndef _SPINLOCK_H
-#define _SPINLOCK_H
+#ifndef _SPINLOCK_CMPXCHG_H
+#define _SPINLOCK_CMPXCHG_H
 
 typedef struct {
     volatile char lock;
@@ -36,4 +36,4 @@ SPINLOCK_ATTR void spin_unlock(spinlock *s)
 
 #define SPINLOCK_INITIALIZER { 0 }
 
-#endif /* _SPINLOCK_H */
+#endif /* _SPINLOCK_CMPXCHG_H */

@@ -16,8 +16,12 @@
 #include "spinlock-mcs.h"
 #elif defined(TICKET)
 #include "spinlock-ticket.h"
-#else
+#elif defined(PTHREAD)
+#include "spinlock-pthread.h"
+#elif defined(CMPXCHG)
 #include "spinlock-cmpxchg.h"
+#else
+#error "must define a spinlock implementation"
 #endif
 
 /* It's hard to say which spinlock implementation performs best. I guess the
@@ -82,7 +86,7 @@ static void calc_time(struct timeval *start, struct timeval *end) {
         end->tv_sec - start->tv_sec,
         end->tv_usec - start->tv_usec
     };
-    printf("%d.%06d\t", interval.tv_sec, interval.tv_usec);
+    printf("%ld.%06ld\t", (long)interval.tv_sec, (long)interval.tv_usec);
 }
 
 volatile int counter = 0;
@@ -99,7 +103,7 @@ void bind_core(int threadid) {
     int core = threadid % 10;
 
     int logical_id = 4 * core + phys_id;
-    printf("thread %ld bind to logical core %ld on physical id %ld\n", threadid, logical_id, phys_id);
+    printf("thread %d bind to logical core %d on physical id %d\n", threadid, logical_id, phys_id);
 
     cpu_set_t set;
     CPU_ZERO(&set);

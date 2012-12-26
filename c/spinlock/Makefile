@@ -1,12 +1,12 @@
 CFLAGS = -O2 -g -std=gnu99 -I..
 
 programs = test-spinlock-cmpxchg test-spinlock-xchg test-spinlock-k42 \
-		   test-spinlock-mcs test-spinlock-ticket
+		   test-spinlock-mcs test-spinlock-ticket test-spinlock-pthread
 
 all: $(programs)
 
 test-spinlock-cmpxchg: test-spinlock.c
-	$(CC) $(CFLAGS) -lpthread $^ -o $@
+	$(CC) $(CFLAGS) -DCMPXCHG -lpthread $^ -o $@
 
 test-spinlock-xchg: test-spinlock.c
 	$(CC) $(CFLAGS) -DXCHG -lpthread $^ -o $@
@@ -19,6 +19,9 @@ test-spinlock-mcs: test-spinlock.c
 
 test-spinlock-ticket: test-spinlock.c
 	$(CC) $(CFLAGS) -DTICKET -lpthread $^ -o $@
+
+test-spinlock-pthread: test-spinlock.c
+	$(CC) $(CFLAGS) -DPTHREAD -lpthread $^ -o $@
 
 %:%.c
 	$(CC) $(CFLAGS) $< -o $@
