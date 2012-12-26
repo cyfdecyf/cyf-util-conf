@@ -36,6 +36,9 @@
  * Here's the result on Dell R910 server (4 CPUs, 10 cores each), with Intel(R)
  * Xeon(R) CPU E7- 4850  @ 2.00GHz
  *
+ * - pthread_mutex BEATS ALL when there's more than 2 cores running this
+ *   benchmark! Not sure what's the trick used by pthread_mutex.
+ *
  * - For spinlock with cmpxchg, the performance degrades very fast with the
  * increase of threads. Seems that it does not have good scalability.
  *
@@ -103,7 +106,7 @@ void bind_core(int threadid) {
     int core = threadid % 10;
 
     int logical_id = 4 * core + phys_id;
-    printf("thread %d bind to logical core %d on physical id %d\n", threadid, logical_id, phys_id);
+    /*printf("thread %d bind to logical core %d on physical id %d\n", threadid, logical_id, phys_id);*/
 
     cpu_set_t set;
     CPU_ZERO(&set);
