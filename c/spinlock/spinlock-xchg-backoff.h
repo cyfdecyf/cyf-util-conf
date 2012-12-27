@@ -1,5 +1,5 @@
-#ifndef _SPINLOCK_XCHG_H
-#define _SPINLOCK_XCHG_H
+#ifndef _SPINLOCK_XCHG_BACKOFF_H
+#define _SPINLOCK_XCHG_BACKOFF_H
 
 /* Spin lock using xchg. Added backoff wait to avoid concurrent lock/unlock
  * operation.
@@ -33,8 +33,12 @@ static inline void spin_lock(spinlock *lock)
     while (1) {
         if (!xchg_8(lock, BUSY)) return;
     
+        // wait here is important to performance.
+        for (int i = 0; i < wait; i++) {
+            cpu_relax();
+        }
         while (*lock) {
-            wait *= 2; // exponential backoff
+            wait *= 2; // exponential backoff if can't get lock
             for (int i = 0; i < wait; i++) {
                 cpu_relax();
             }
@@ -53,4 +57,4 @@ static inline int spin_trylock(spinlock *lock)
     return xchg_8(lock, BUSY);
 }
 
-#endif /* _SPINLOCK_XCHG_H */
+#endif /* _SPINLOCK_XCHG_BACKOFF_H */
