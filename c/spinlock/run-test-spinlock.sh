@@ -27,3 +27,7 @@ run_test "test-spinlock-ticket"
 
 echo "test spin lock using pthread"
 run_test "test-spinlock-pthread"
+
+echo "test spin lock using xchg-backoff"
+run_test "test-spinlock-xchg-backoff"
+

@@ -10,6 +10,8 @@
 
 #ifdef XCHG
 #include "spinlock-xchg.h"
+#elif defined(XCHGBACKOFF)
+#include "spinlock-xchg-backoff.h"
 #elif defined(K42)
 #include "spinlock-k42.h"
 #elif defined(MCS)
@@ -61,7 +63,7 @@
 
 /* Bind threads to specific cores. The goal is to make threads locate on the
  * same physical CPU. */
-/*#define BIND_CORE*/
+#define BIND_CORE
 
 static int nthr = 0;
 
