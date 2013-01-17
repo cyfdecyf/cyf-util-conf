@@ -85,6 +85,8 @@ alias -g ...='../../'
 alias -g G='| egrep --color=auto'
 alias -g C='| wc -l'
 alias -g L='| less -r'
+alias -g H='| head -n'
+alias -g T='| tail -n'
 
 #############################
 # Utility function
@@ -100,6 +102,18 @@ range() {
 
 ppp() {
     ppp.lua $1 $2 | pbcopy
+}
+
+tarscp() {
+    tar cvz $1 | ssh $2 'tar xz'
+}
+
+sumcol() {
+    awk "{ sum += \$$1 } END { print sum }" $2
+}
+
+avgcol() {
+    awk "{ sum += \$$1 } END { print sum/NR }" $2
 }
 
 ##############################
@@ -144,8 +158,8 @@ bindkey "u" insert-sudo
 ##############################
 
 HISTFILE=~/.histfile
-HISTSIZE=1000
-SAVEHIST=500
+HISTSIZE=10000
+SAVEHIST=10000
 setopt APPEND_HISTORY
 # Write after each command
 # setopt INC_APPEND_HISTORY
@@ -171,6 +185,8 @@ if [[ -n $STY || -n $TMUX ]]; then
 else
     export PS1="%{${fg[cyan]}%}[%D{%H:%M} %n@%m:%20<..<%~%<<]%{$reset_color%} "
 fi
+
+source ~/.zsh/git-flow-completion.zsh
 
 # For rvm
 
