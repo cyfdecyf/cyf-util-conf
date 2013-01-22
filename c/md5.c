@@ -50,6 +50,7 @@
  */
 main()
 {
+    /* CYF 2013-01-22: Remove size in array definition so can easily add more test. */
     static const char *const test[] = {
         "", /*d41d8cd98f00b204e9800998ecf8427e*/
         "a", /*0cc175b9c0f1b6a831c399e269772661*/
