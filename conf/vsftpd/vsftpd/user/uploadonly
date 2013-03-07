@@ -1,0 +1,17 @@
+local_root=/srv/ftp/
+
+write_enable=YES
+
+# treate virtual user as anonymous user, so we should change settings for
+# anonymous user to change the setting for the specific virtual user.
+
+anon_upload_enable=YES
+# make the file not world readable
+chown_upload_mode=0600
+# only world readable can be downloaded, so uploaded file can't be downloaded
+anon_world_readable_only=YES
+# don't allow creating new directory
+anon_mkdir_write_enable=NO
+# disable remove and rename
+anon_other_write_enable=NO
+

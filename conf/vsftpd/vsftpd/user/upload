@@ -1,7 +1,11 @@
+local_root=/srv/ftp/upload
 write_enable=YES
 
+# treate anonymous user as local user, so they have same privilege as the local
+# user.
 #virtual_use_local_privs=YES
 #local_umask=0022
+
 # Or use the following
 
 # virtual user is treated as anonymous user by default.
@@ -16,4 +20,3 @@ anon_upload_enable=YES
 anon_mkdir_write_enable=YES
 # enable remove and rename
 anon_other_write_enable=YES
-local_root=/srv/ftp/upload
