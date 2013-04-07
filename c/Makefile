@@ -1,11 +1,8 @@
 CFLAGS = -O2 -g -std=gnu99
 
-programs = test-rwlock test-atomic
+programs = test-atomic
 
 all: $(programs)
-
-test-rwlock: test-rwlock.o rwlock.o
-	$(CC) $(CFLAGS) -lpthread $^ -o $@ 
 
 test-atomic: test-atomic.o
 	$(CC) $(CFLAGS) $^ -o $@ 
