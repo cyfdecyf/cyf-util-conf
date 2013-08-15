@@ -21,12 +21,27 @@ colors
 autoload -U select-word-style
 select-word-style bash
 
+# display vcs info in prompt
+setopt promptsubst
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' enable git hg
+zstyle ':vcs_info:*' actionformats '%F{5}(%f%s%F{5})%F{3}-%F{5}%F{2}%b%F{3}|%F{1}%a%F{5}%f'
+zstyle ':vcs_info:*' formats '%F{5}(%f%s%F{5})%F{3}-%F{5}%F{2}%b%F{5}%f'
+zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat '%b%F{1}:%F{3}%r'
+
 zstyle :compinstall filename '~/.zshrc'
 
 setopt emacs
 setopt autocd correct rm_star_wait rc_expand_param
 setopt extendedglob no_case_glob numeric_glob_sort
 unsetopt beep
+
+# OS X specific settings
+if [[ `uname` == 'Darwin' ]]; then
+    unalias run-help
+    autoload run-help
+    HELPDIR=/usr/local/share/zsh/helpfiles
+fi
 
 #############################
 # Completion settings
@@ -35,6 +50,7 @@ unsetopt beep
 # compdef can be used after compinit is loaded.
 compdef '_files -g "*.tar.gz"' tar
 compdef '_files -g "*.tar.bz2"' tar
+compdef '_files -g "*.tar"' tar
 
 ###################
 # For Go language
@@ -69,6 +85,7 @@ alias vi='vim'
 alias pyhttpd='python -m SimpleHTTPServer'
 alias mfind='mdfind -name'
 alias dslookup='dscacheutil -q host -a name'
+alias git=hub
 #alias scsh='rlwrap scsh'
 #export BREAK_CHARS="\"#'(),;\|!?[]{}"
 #alias sbcl="rlwrap -b \$BREAK_CHARS sbcl"
@@ -179,11 +196,13 @@ setopt HIST_REDUCE_BLANKS
 
 if [[ -n $STY || -n $TMUX ]]; then
     function title() { print -Pn "\ek$1\e\\"}
-    function precmd() { title "%20<..<%~%<<" }
+    function precmd() { vcs_info; title "%20<..<%~%<<" }
     function preexec() { title "%20>..>$1%<<" }
-    export PS1="%{${fg[cyan]}%}[%D{%H:%M} %20<..<%~%<<]%{$reset_color%} "
+    # must be enclosed in single quote, otherwise, prompt subsitute won't work
+    export PS1='%{${fg[cyan]}%}%D{%H:%M} %20<..<%~%<<${vcs_info_msg_0_}%{$reset_color%}> '
 else
-    export PS1="%{${fg[cyan]}%}[%D{%H:%M} %n@%m:%20<..<%~%<<]%{$reset_color%} "
+    function precmd() { vcs_info }
+    export PS1='%{${fg[cyan]}%}%D{%H:%M} %n@%m:%20<..<%~%<<${vcs_info_msg_0_}%{$reset_color%}> '
 fi
 
 source ~/.zsh/git-flow-completion.zsh
