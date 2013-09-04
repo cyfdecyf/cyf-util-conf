@@ -1,0 +1,16 @@
+export COPY_EXTENDED_ATTRIBUTES_DISABLE=true
+
+export EDITOR=vi
+
+export GOPATH=~/local/mygo
+export PLAN9=/usr/local/plan9port
+export PATH=$(brew --prefix coreutils)/libexec/gnubin:~/local/bin:$GOPATH/bin:/usr/local/go/bin:/usr/local/share/npm/bin:/usr/local/openresty/nginx/sbin:/usr/local/bin:/usr/local/sbin:$PATH:$PLAN9/bin
+#export http_proxy=http://10.131.251.185:2012
+export PYTHONPATH=/usr/local/lib/python2.7/site-packages
+
+#export CLUA_PATH='./?.so;/usr/local/lib/lua/5.1/?.so;/usr/local/lib/lua/5.1/loadall.so;/usr/local/lib/luarocks/lib/lua/5.1/?.so'
+
+#[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
+
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+
