@@ -83,13 +83,12 @@ alias less='less -r'
 alias man='LANG=C man'
 alias vi='vim'
 alias pyhttpd='python -m SimpleHTTPServer'
-alias mfind='mdfind -name'
-alias dslookup='dscacheutil -q host -a name'
-alias git=hub
 #alias scsh='rlwrap scsh'
 #export BREAK_CHARS="\"#'(),;\|!?[]{}"
 #alias sbcl="rlwrap -b \$BREAK_CHARS sbcl"
 if [[ `uname` == 'Darwin' ]]; then
+    alias mfind='mdfind -name'
+    alias dslookup='dscacheutil -q host -a name'
     alias vim='/Applications/MacVim.app/Contents/MacOS/Vim'
     alias vi='/Applications/MacVim.app/Contents/MacOS/Vim'
     alias mongod='mongod run --config /usr/local/Cellar/mongodb/1.8.3-x86_64/mongod.conf'
@@ -115,10 +114,6 @@ nicemount() {
 
 range() {
     sed -n "$1,$2 p" $3
-}
-
-ppp() {
-    ppp.lua $1 $2 | pbcopy
 }
 
 tarscp() {
