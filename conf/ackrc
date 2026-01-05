@@ -1,0 +1,4 @@
+--type-set=tags=cscope.out,cscope.files,tags
+--notags
+--type-add=html=.html.erb,.html.haml
+--type-add=css=.sass
